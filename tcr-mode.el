@@ -23,7 +23,7 @@
       (message "test call result: %s" call-result)
       call-result)))
 
-(defun call-git-cmd (git-cmd)
+(defun execute-git-cmd (git-cmd)
   "Call the given GIT-CMD with 'shell-command."
   (message "calling: %s" git-cmd)
   (shell-command git-cmd))
@@ -40,8 +40,8 @@
 
     (unless (eq test-result nil)
       (if (= test-result 0)
-          (call-git-cmd git-commit-cmd)
-        (call-git-cmd git-reset-cmd)))
+          (execute-git-cmd git-commit-cmd)
+        (execute-git-cmd git-reset-cmd)))
     ))
 
 (defun tcr-execute ()
