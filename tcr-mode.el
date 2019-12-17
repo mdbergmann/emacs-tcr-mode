@@ -1,4 +1,5 @@
 ;;; package --- summary:
+; Copyright: Manfred Bergmann
 
 ;;; Commentary:
 
