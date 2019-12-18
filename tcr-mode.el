@@ -41,12 +41,12 @@
     (unless (eq test-result nil)
       (if (= test-result 0)
           (execute-git-cmd git-commit-cmd)
-        (execute-git-cmd git-reset-cmd)))
-    ))
+        (execute-git-cmd git-reset-cmd)))))
 
 (defun tcr-execute ()
   (interactive)
   (save-buffer)
+  (save-some-buffers)
   (tcr-after-save-action))
 
 (define-minor-mode tcr-mode
