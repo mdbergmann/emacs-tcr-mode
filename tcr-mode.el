@@ -25,13 +25,14 @@
 
 (defun execute-ocaml-test ()
   "Call OCaml test via 'dune'."
-  (let* ((test-cmd-args (list "dune" "test"))
+  (let* ((test-cmd-args (list "opam" "exec" "dune" "test"))
          (call-args
           (append (list (car test-cmd-args) nil "TCR out" t)
                   (cdr test-cmd-args))))
     (message "calling: %s" call-args)
     (let* ((default-directory (locate-dominating-file default-directory "dune-project"))
            (call-result (apply 'call-process call-args)))
+      (message "cwd: %s" default-directory)
       (message "test call result: %s" call-result)
       call-result)))
 
