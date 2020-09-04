@@ -8,10 +8,10 @@
 (make-variable-buffer-local
  (defvar tcr-mode))
 
-(defvar git-commit-cmd "git commit -am 'TCR: test OK'")
-(defvar git-reset-cmd "git reset --hard")
+(defvar-local git-commit-cmd "git commit -am 'TCR: test OK'")
+(defvar-local git-reset-cmd "git reset --hard")
 
-(defun execute-elixir-test ()
+(defun tcr-execute-elixir-test ()
   "Call Elixir test."
   (let* ((test-cmd-args (list "mix" "test"))
          (call-args
@@ -23,7 +23,7 @@
       (message "test call result: %s" call-result)
       call-result)))
 
-(defun execute-ocaml-test ()
+(defun tcr-execute-ocaml-test ()
   "Call OCaml test via 'dune'."
   (let* ((test-cmd-args (list "opam" "exec" "dune" "test"))
          (call-args
@@ -47,9 +47,9 @@
 
   (let ((test-result (cond
                       ((string-equal "elixir-mode" major-mode)
-                       (execute-elixir-test))
+                       (tcr-execute-elixir-test))
                       ((string-equal "tuareg-mode" major-mode)
-                       (execute-ocaml-test))
+                       (tcr-execute-ocaml-test))
                       (t (progn (message "Unknown mode!")
                                 nil)))))
 
@@ -72,5 +72,4 @@
             map))
 
 (provide 'tcr-mode)
-
 ;;; tcr-mode ends here
