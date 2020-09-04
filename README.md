@@ -14,8 +14,11 @@ To install it clone this to some local folder and initialize like this in Emacs:
 
 When done you have a minor mode called `tcr-mode`.
 
-This mode can be enabled for basically every buffer, but currently only Elixir mix projects are supported.
-On other code or project it just saves the buffer.
+This mode can be enabled for basically every buffer, but currently only
+- Elixir `mix` projects (via elixir-mode) and 
+- OCaml projects (via tuareg-mode) based on `opam` and `dune`
+
+are supported. On other code or project it just saves the buffer.
 
 To execute TCR on a buffer use the key sequence: `C-t c`.
 This will first save the buffer and then execute the tests plus either `git commit` or `git reset --hard`.
