@@ -11,65 +11,22 @@
 (defvar-local git-commit-cmd "git commit -am 'TCR: test OK'")
 (defvar-local git-reset-cmd "git reset --hard")
 
-(defun tcr-execute-elixir-test ()
-  "Call Elixir test."
-  (let* ((test-cmd-args (list "mix" "test"))
-         (call-args
-          (append (list (car test-cmd-args) nil "TCR out" t)
-                  (cdr test-cmd-args))))
-    (message "calling: %s" call-args)
-    (let* ((default-directory (locate-dominating-file default-directory "mix.exs"))
-           (call-result (apply 'call-process call-args)))
-      (message "test call result: %s" call-result)
-      call-result)))
-
-(defun tcr-execute-ocaml-test ()
-  "Call OCaml test via 'dune'."
-  (let* ((test-cmd-args (list "opam" "exec" "dune" "test"))
-         (call-args
-          (append (list (car test-cmd-args) nil "TCR out" t)
-                  (cdr test-cmd-args))))
-    (message "calling: %s" call-args)
-    (let* ((default-directory (locate-dominating-file default-directory "dune-project"))
-           (call-result (apply 'call-process call-args)))
-      (message "cwd: %s" default-directory)
-      (message "test call result: %s" call-result)
-      call-result)))
-
-(defun execute-git-cmd (git-cmd)
+(defun tcr--execute-git-cmd (git-cmd)
   "Call the given GIT-CMD with 'shell-command."
   (message "calling: %s" git-cmd)
   (shell-command git-cmd))
 
-(defun tcr-after-save-action ()
-  "Here we call test and commit || revert."
-  (message "after save action from TCR in: %s" major-mode)
-
-  (let ((test-result (cond
-                      ((string-equal "elixir-mode" major-mode)
-                       (tcr-execute-elixir-test))
-                      ((string-equal "tuareg-mode" major-mode)
-                       (tcr-execute-ocaml-test))
-                      (t (progn (message "Unknown mode!")
-                                nil)))))
-
-    (unless (eq test-result nil)
-      (if (= test-result 0)
-          (execute-git-cmd git-commit-cmd)
-        (execute-git-cmd git-reset-cmd)))))
-
-(defun tcr-execute ()
-  (interactive)
+(defun tcr-run-vcr-revert ()
+  "Run a revert operation."
   (save-buffer)
-  (save-some-buffers)
-  (tcr-after-save-action))
+  (message "TCR: running revert!")
+  (tcr--execute-git-cmd git-reset-cmd))
 
-(define-minor-mode tcr-mode
-  "TCR - Test && commit || Revert"
-  :lighter " TCR"
-  :keymap (let ((map (make-sparse-keymap)))
-            (define-key map (kbd "C-t c") 'tcr-execute)
-            map))
+(defun tcr-run-vcr-commit ()
+  "Run a commit operation."
+  (save-buffer)
+  (message "TCR: running commit!")
+  (tcr--execute-git-cmd git-commit-cmd))
 
 (provide 'tcr-mode)
-;;; tcr-mode ends here
+;;; tcr-mode.el ends here
