@@ -18,15 +18,17 @@
 
 (defun tcr-run-vcr-revert ()
   "Run a revert operation."
-  (save-buffer)
-  (message "TCR: running revert!")
-  (tcr--execute-git-cmd git-reset-cmd))
+  (when (member "tcr-mode" minor-mode-list)
+    (save-buffer)
+    (message "TCR: running revert!")
+    (tcr--execute-git-cmd git-reset-cmd)))
 
 (defun tcr-run-vcr-commit ()
   "Run a commit operation."
-  (save-buffer)
-  (message "TCR: running commit!")
-  (tcr--execute-git-cmd git-commit-cmd))
+  (when (member "tcr-mode" minor-mode-list)
+    (save-buffer)
+    (message "TCR: running commit!")
+    (tcr--execute-git-cmd git-commit-cmd)))
 
 (provide 'tcr-mode)
 ;;; tcr-mode.el ends here
