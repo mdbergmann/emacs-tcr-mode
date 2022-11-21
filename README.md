@@ -14,16 +14,24 @@ To install it clone this to some local folder and initialize like this in Emacs:
 
 When done you have a minor mode called `tcr-mode`.
 
-This mode can be enabled for basically every buffer, but currently only
-- Elixir `mix` projects (via elixir-mode) and 
-- OCaml projects (via tuareg-mode) based on `opam` and `dune`
+This mode can be enabled for basically every buffer. Only then it takes effect.
+The plugin has to be configured with hooks, like this:
 
-are supported. On other code or project it just saves the buffer.
+```
+(use-package tcr-mode
+  :load-path "~/.emacs.d/plugins/tcr-mode"
+  :init
+  (add-hook 'lfeunit-test-success-hook 'tcr-run-vcr-commit)
+  (add-hook 'lfeunit-test-failure-hook 'tcr-run-vcr-revert))
+```
 
-To execute TCR on a buffer use the key sequence: `C-t c`.
-This will first save the buffer and then execute the tests plus either `git commit` or `git reset --hard`.
+`tcr-mode` can be enabled for specific hooks. Plugins like:
+
+- [LFEUnit](https://github.com/mdbergmann/emacs-lfeunit)
+- [BloopUnit](https://github.com/mdbergmann/emacs-bloopunit)
+- [OcamlUnit](https://github.com/mdbergmann/emacs-ocamlunit)
+
+expose hooks for failed or succeeded test runs, so the above configuration run `tcr-run-vcr-commit` or `tcr-run-vcr-revert` function when success or failure hooks are run from those plugins.
 
 If your buffer has Magit enabled the buffer is reverted on external changes automatically.
 If no Magit you might have to enable `auto-revert-mode`.
-
-After the first execution of `tcr-execute` you can view the "TCR out" buffer for test output.
