@@ -30,5 +30,10 @@
     (message "TCR: running commit!")
     (tcr--execute-git-cmd git-commit-cmd)))
 
+(define-minor-mode tcr-mode
+  "TCR - Test && Commit || Revert."
+  :lighter " TCR")
+
+
 (provide 'tcr-mode)
 ;;; tcr-mode.el ends here
