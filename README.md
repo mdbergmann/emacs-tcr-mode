@@ -27,13 +27,15 @@ The plugin has to be configured with hooks, like this:
   (add-hook 'lfeunit-test-failure-hook 'tcr-run-vcr-revert))
 ```
 
-`tcr-mode` can be enabled for specific hooks. Plugins like:
+`tcr-mode` can be enabled for specific hooks. Plugins like the following provide those hooks for 'succeed' or 'fail':
 
 - Lisp Flavoured Erlang (LFE) [LFEUnit](https://github.com/mdbergmann/emacs-lfeunit)
 - Scala (via Bloop) [BloopUnit](https://github.com/mdbergmann/emacs-bloopunit)
 - OCaml [OcamlUnit](https://github.com/mdbergmann/emacs-ocamlunit)
 
-Those projects expose hooks for failed or succeeded test runs, so the above hook configuration runs `tcr-run-vcr-commit` or `tcr-run-vcr-revert` function when success or failure hooks are executed from those plugins.
+So the above hook configuration runs `tcr-run-vcr-commit` or `tcr-run-vcr-revert` function when success or failure hooks are executed from those plugins.
+
+But tcr-mode is agnostic. It may run with anything where a 'succeed' or 'fail' can be 'raised'. Or, the minor-mode function for 'commit'/'revert' can also be called manually.
 
 If your buffer has Magit enabled the buffer is reverted on external changes automatically.
 If no Magit you might have to enable `auto-revert-mode`.
