@@ -30,6 +30,7 @@
     (message "TCR: running commit!")
     (tcr--execute-git-cmd git-commit-cmd)))
 
+;;;###autoload
 (define-minor-mode tcr-mode
   "TCR - Test && Commit || Revert."
   :lighter " TCR")
